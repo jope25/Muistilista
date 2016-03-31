@@ -1,0 +1,51 @@
+\documentclass{report}
+
+\usepackage[finnish]{babel}
+\usepackage[utf8]{inputenc}
+\usepackage{graphicx}
+\usepackage[ampersand]{easylist}
+
+\begin{document}
+
+\section*{Johdanto}
+\subsection*{Järjestelmän tarkoitus}
+Järjestelmä tarjoaa käyttäjilleen mahdollisuuden tallentaa askareitaan muistiin ja listata niitä niiden tärkeyden mukaan. Se siis auttaa muistamaan päivän askareet, jolloin ne tulee varmasti suoritettua.
+
+\subsection*{Toteutus-/toimintaympäristö}
+Työ toteutetaan laitoksen users-palvelimelle käyttäen PHP-kieltä. Sovellus tulee käyttämään PostgreSQL-tietokantapalvelinta.
+
+\section*{Yleiskuva järjestelmästä}
+\subsection*{Käyttötapauskaavio}
+\includegraphics[scale=0.66]{kaavio}
+
+\subsection*{Käyttäjäryhmät}
+\subsubsection*{Jokamies}
+Jokamiehellä tarkoitetaan ketä tahansa, joka Internetin välityksellä tulee sovelluksen etusivulle. 
+
+Myös sidosryhmä "Käyttäjä" kuuluu tähän sidosryhmään.
+
+\subsubsection*{Käyttäjä}
+Käyttäjä on henkilö, joka on rekisteröitynyt sovellukseen sekä kirjautunut sisään.
+
+\subsection*{Käyttötapauskuvaukset}
+\ListProperties(Hang=true, Hide=50, Progressive=3ex, Style*=$\bullet$ , Style2*=--)
+\subsubsection*{Jokamiehen käyttötapaukset}
+\begin{easylist}
+& Rekisteröityminen
+& Sivuston avaaminen
+\end{easylist}
+
+\subsubsection*{Käyttäjän käyttötapaukset}
+\begin{easylist}
+& Askareiden hallinoiminen
+&& Lisäys, muokkaus, luokkittelu ja poistaminen
+&& Tärkeyttäminen
+&&& Asetetaan askareelle tärkeysaste
+& Tärkeyasteiden hallinnoiminen
+&& Lisäys ja poisto
+& Luokkien hallinnoiminen
+&& Lisäys ja poisto
+& Kirjautuminen 
+\end{easylist}
+
+\end{document}
