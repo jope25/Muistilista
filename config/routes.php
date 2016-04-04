@@ -1,9 +1,21 @@
 <?php
 
-  $routes->get('/', function() {
+$routes->get('/', function() {
     HelloWorldController::index();
-  });
+});
 
-  $routes->get('/hiekkalaatikko', function() {
+$routes->get('/hiekkalaatikko', function() {
     HelloWorldController::sandbox();
-  });
+});
+
+$routes->get('/askareet', function() {
+    HelloWorldController::askare_listaus();
+});
+
+$routes->get('/askareet/1', function() {
+    HelloWorldController::askare();
+});
+
+$routes->get('/askareet/1/muokkaus', function() {
+    HelloWorldController::askare_muokkaus();
+});
