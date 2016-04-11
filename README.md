@@ -4,6 +4,7 @@ Yleisiä linkkejä:
 
 * [Linkki sovellukseeni](http://jpetro.users.cs.helsinki.fi/muistilista/)
 * [Linkki dokumentaatiooni](/doc/dokumentaatio.pdf)
+* [Tietokannat ja testidata](http://jpetro.users.cs.helsinki.fi/muistilista/tietokantayhteys)
 
 ## Työn aihe
 
