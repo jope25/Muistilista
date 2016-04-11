@@ -9,8 +9,8 @@ Yleisiä linkkejä:
 
 [Muistilista](http://advancedkittenry.github.io/suunnittelu_ja_tyoymparisto/aiheet/Muistilista.html) 
 
-## Bootstrap linkkejä
-* [tekstin asettelu ja tyylittely](http://getbootstrap.com/css/#type)
-* [taulukot](http://getbootstrap.com/css/#tables)
-* [lomakkeet](http://getbootstrap.com/css/#forms)
-* [painikkeet](http://getbootstrap.com/css/#buttons)
+## Staattiset sivut
+* [Etusivu](http://jpetro.users.cs.helsinki.fi/muistilista/)
+* [Listaussivu](http://jpetro.users.cs.helsinki.fi/muistilista/askareet)
+* [Muokkaussivu](http://jpetro.users.cs.helsinki.fi/muistilista/askareet/1/muokkaus)
+* [Esittelysivu](http://jpetro.users.cs.helsinki.fi/muistilista/askareet/1)

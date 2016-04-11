@@ -16,7 +16,7 @@ Työ toteutetaan laitoksen users-palvelimelle käyttäen PHP-kieltä. Sovellus t
 
 \section*{Yleiskuva järjestelmästä}
 \subsection*{Käyttötapauskaavio}
-\includegraphics[scale=0.66]{kaavio}
+\includegraphics[scale=0.66]{ktkaavio}
 
 \subsection*{Käyttäjäryhmät}
 \subsubsection*{Jokamies}
@@ -47,5 +47,60 @@ Käyttäjä on henkilö, joka on rekisteröitynyt sovellukseen sekä kirjautunut
 && Lisäys ja poisto
 & Kirjautuminen 
 \end{easylist}
+
+\section*{Järjestelmän tietosisältö}
+\subsection*{Käsitekaavio}
+\includegraphics[scale=0.75]{kasitekaavio}
+
+\subsection*{Tietokohteet}
+\subsubsection*{Käyttäjä}
+\begin{tabular}{ | l | l | l | p{7.5cm} |} \hline
+\textbf{Attribuutti} & \textbf{Arvojoukko} & \textbf{Kuvailu} \\ \hline
+Käyttäjänimi & Merkkijono, max. 20 merkkiä & Käyttäjän nimi sovelluksessa \\ \hline
+Salasana & Merkkijono, max. 20 merkkiä & Merkkijono, jolla käyttäjä varmennetaan \\ \hline
+\end{tabular}
+\\ \\ Käyttäjällä voi olla useita askareita, tärkeysasteita ja luokkia, joiden kaikkien olemmassaolo riippuu käyttäjästä.
+
+\subsubsection*{Askare}
+\begin{tabular}{ | l | l | l | p{7.5cm} |} \hline
+\textbf{Attribuutti} & \textbf{Arvojoukko} & \textbf{Kuvailu} \\ \hline
+Käyttäjä & Merkkijono & Käyttäjän pk \\ \hline
+Tärkeysaste & Luku & Tärkeysasteen id \\ \hline
+Valmis & boolean & Onko askare tehty \\ \hline
+Nimi & Merkkijono, max. 25 merkkiä & Askareen nimi \\ \hline
+Deadline & Päivämäärä & Milloin askare viimeistään suoritettu \\ \hline
+Lisätieto & Merkkijono & Lisätietoa askareesta ja tarkempaa kuvailua \\ \hline
+\end{tabular}
+\\ \\ Askare on yhden käyttäjän hallinnoima ja sillä voi olla yksi tärkeysaste. Lisäksi sillä voi olla useita askareluokkia. 
+
+\subsubsection*{Luokka}
+\begin{tabular}{ | l | l | l | p{7.5cm} |} \hline
+\textbf{Attribuutti} & \textbf{Arvojoukko} & \textbf{Kuvailu} \\ \hline
+Käyttäjä & Merkkijono & Käyttäjän pk \\ \hline
+Nimi & Merkkijono, max. 20 merkkiä & Luokan nimi \\ \hline
+Lisätieto & Merkkijono & Lisätietoa luokasta \\ \hline
+\end{tabular}
+\\ \\ Luokka on yhden käyttäjän hallinnoima. Luokalla voi olla useita askareluokkia.
+\subsubsection*{Tärkeysaste}
+\begin{tabular}{ | l | l | l | p{7.5cm} |} \hline
+\textbf{Attribuutti} & \textbf{Arvojoukko} & \textbf{Kuvailu} \\ \hline
+Käyttäjä & Merkkijono & Käyttäjän pk \\ \hline
+Nimi & Merkkijono, max. 20 merkkiä & Tärkeysasteen nimi \\ \hline
+Tärkeys & Kokonaisluku, 1-5 & Kuinka tärkeä aste on, 5 on tärkein \\ \hline
+Lisätieto & Merkkijono & Lisätietoa tärkeysasteesta \\ \hline
+\end{tabular}
+\\ \\ Tärkeysaste on yhden käyttäjän hallinnoima. Lisäksi tärkeysasteeseen voi liittyä useita askareita.
+
+\subsubsection*{Askareluokka}
+\begin{tabular}{ | l | l | l | p{7.5cm} |} \hline
+\textbf{Attribuutti} & \textbf{Arvojoukko} & \textbf{Kuvailu} \\ \hline
+Askare & Luku & Askare id \\ \hline
+Luokka & Luku & Luokka id \\ \hline
+\end{tabular}
+\\ \\ Askareluokka on liitostauluna luokan ja askareen välillä.
+
+\section*{Relaatiotietokantakaavio}
+\includegraphics[scale=0.6]{rtkk}
+
 
 \end{document}
