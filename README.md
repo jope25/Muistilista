@@ -1,6 +1,6 @@
 # Tietokantasovelluksen esittelysivu
 
-Yleisiä linkkejä:
+## Yleisiä linkkejä
 
 * [Linkki sovellukseeni](http://jpetro.users.cs.helsinki.fi/muistilista/)
 * [Linkki dokumentaatiooni](/doc/dokumentaatio.pdf)
