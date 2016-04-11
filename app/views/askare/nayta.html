@@ -1,0 +1,21 @@
+{% extends "base.html" %}
+{% block content %}
+<h1>{{askare.nimi}}</h1>
+<p>
+    <button class="btn btn-danger">Poista</button> <a href="#" class="btn btn-default">Muokkaa</a>
+</p>
+<!-- Tiedot tulee listana tähän -->
+<ul>
+    <li><strong>Tärkeysaste:</strong> {{askare.ta}}</li>
+    <li><strong>Tilanne:</strong> 
+        {% if askare.valmis %}
+            <label class="label label-success">Tehty
+        {% else %}
+            <label class="label label-danger">Kesken
+        {% endif %}
+    </li>
+    <li><strong>Luokat:</strong> </li>
+    <li><strong>Lisätty:</strong> {{askare.lisatty}}</li>
+</ul>
+<p>{{askare.lisatieto}}</p>
+{% endblock %}

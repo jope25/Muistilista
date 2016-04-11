@@ -8,6 +8,10 @@ $routes->get('/askare', function() {
 AskareKontrolleri::index();
 });
 
+$routes->get('/askare/:id', function($id){
+    AskareKontrolleri::nayta($id);
+});
+
 
 
 $routes->get('/hiekkalaatikko', function() {
