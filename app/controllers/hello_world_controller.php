@@ -7,8 +7,10 @@ class HelloWorldController extends BaseController {
     }
 
     public static function sandbox() {
-        // Testaa koodiasi täällä
-        View::make('helloworld.html');
+        $askare = Askare::find(1);
+        $askareet = Askare::all();
+        Kint::dump($askare);
+        Kint::dump($askareet);
     }
 
     public static function askare_muokkaus() {

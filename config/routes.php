@@ -1,21 +1,27 @@
 <?php
 
 $routes->get('/', function() {
-    HelloWorldController::index();
+AskareKontrolleri::index();
 });
 
+$routes->get('/askare', function() {
+AskareKontrolleri::index();
+});
+
+
+
 $routes->get('/hiekkalaatikko', function() {
-    HelloWorldController::sandbox();
+HelloWorldController::sandbox();
 });
 
 $routes->get('/askareet', function() {
-    HelloWorldController::askare_listaus();
+HelloWorldController::askare_listaus();
 });
 
 $routes->get('/askareet/1', function() {
-    HelloWorldController::askare();
+HelloWorldController::askare();
 });
 
 $routes->get('/askareet/1/muokkaus', function() {
-    HelloWorldController::askare_muokkaus();
+HelloWorldController::askare_muokkaus();
 });
