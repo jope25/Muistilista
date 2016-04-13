@@ -8,7 +8,7 @@ class Askare extends BaseModel {
         parent::_construct($attribuutit);
     }
 
-    public static function all() {
+    public static function kaikki() {
         $kysely = DB::connection()->prepare('SELECT * FROM Askare');
         $kysely->execute();
         $rivit = $kysely->fetchAll();
@@ -29,7 +29,7 @@ class Askare extends BaseModel {
         return $askareet;
     }
 
-    public static function find($id) {
+    public static function etsi($id) {
         $kysely = DB::connection()->prepare('SELECT * FROM Askare WHERE id = :id LIMIT 1');
         $kysely->execute(array('id' => $id));
         $rivi = $kysely->fetch();
@@ -49,6 +49,15 @@ class Askare extends BaseModel {
         }
 
         return null;
+    }
+
+    public function tallenna() {
+        $kysely = DB::connection()->prepare('INSERT INTO Askare (nimi, lisatieto) '
+                . 'VALUES (:nimi, :lisatieto) '
+                . 'RETURNING id');
+        $kysely->execute(array('nimi' => $this->nimi, 'lisatieto' => $this->lisatieto));
+        $rivi = $kysely->fetch();
+        $this->id = $rivi['id'];
     }
 
 }

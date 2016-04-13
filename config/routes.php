@@ -8,6 +8,14 @@ $routes->get('/askare', function() {
 AskareKontrolleri::index();
 });
 
+$routes->post('/askare', function(){
+    AskareKontrolleri::lisaa();
+});
+
+$routes->get('/askare/uusi', function(){
+    AskareKontrolleri::luo();
+});
+
 $routes->get('/askare/:id', function($id){
     AskareKontrolleri::nayta($id);
 });
@@ -16,6 +24,10 @@ $routes->get('/askare/:id', function($id){
 
 $routes->get('/hiekkalaatikko', function() {
 HelloWorldController::sandbox();
+});
+
+$routes->get('/etusivu', function() {
+HelloWorldController::index();
 });
 
 $routes->get('/askareet', function() {

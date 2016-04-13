@@ -7,8 +7,8 @@ class HelloWorldController extends BaseController {
     }
 
     public static function sandbox() {
-        $askare = Askare::find(1);
-        $askareet = Askare::all();
+        $askare = Askare::etsi(1);
+        $askareet = Askare::kaikki();
         Kint::dump($askare);
         Kint::dump($askareet);
     }

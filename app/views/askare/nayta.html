@@ -1,12 +1,17 @@
 {% extends "base.html" %}
 {% block content %}
 <h1>{{askare.nimi}}</h1>
+<!--
+<div class="alert alert-success">
+  {{viesti}}
+</div>
+-->
 <p>
     <button class="btn btn-danger">Poista</button> <a href="#" class="btn btn-default">Muokkaa</a>
 </p>
-<!-- Tiedot tulee listana tähän -->
+
 <ul>
-    <li><strong>Tärkeysaste:</strong> {{askare.ta}}</li>
+    <li><strong>Tärkeysaste:</strong></li>
     <li><strong>Tilanne:</strong> 
         {% if askare.valmis %}
             <label class="label label-success">Tehty
