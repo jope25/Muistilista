@@ -2,15 +2,12 @@
 
 class HelloWorldController extends BaseController {
 
-    public static function index() {
+    public static function etusivu() {
         View::make('suunnitelmat/etusivu.html');
     }
 
     public static function sandbox() {
-        $askare = Askare::etsi(1);
-        $askareet = Askare::kaikki();
-        Kint::dump($askare);
-        Kint::dump($askareet);
+        
     }
 
     public static function askare_muokkaus() {
