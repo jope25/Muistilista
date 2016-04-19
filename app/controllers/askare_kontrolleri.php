@@ -27,4 +27,35 @@ class AskareKontrolleri extends BaseController {
             . 'muistilistaan!'));
     }
 
+    public static function muokkaa($id) {
+        $askare = Askare::etsi($id);
+        View::make('askare/muokkaa.html', array('attribuutit' => $askare));
+    }
+
+    public static function paivita($id) {
+        $params = $_POST;
+        $attribuutit = array(
+            'id' => $id,
+            'nimi' => $params['nimi'],
+            'valmis' => $params['valmis'],
+            'lisatieto' => $params['lisatieto']
+        );
+        $askare = new Askare($attribuutit);
+        $virheet = $askare->errors();
+
+        if (count($virheet) > 0) {
+            View::make('askare/muokkaa.html', array('virheet' => $virheet, 
+                'attribuutit' => $attribuutit));
+        } else {
+            $askare->paivita();
+            Redirect::to('/askare/' . $askare->id, array('viesti' => 
+                'Askaretta on muokattu onnistuneesti!'));
+        }
+    }
+
+    public static function poista($id) {
+        $askare = new Askare(array('id' => $id));
+        $askare->poista();
+        Redirect::to('/askare', array('viesti' => 'Askare on poistettu onnistuneesti!'));
+    }
 }

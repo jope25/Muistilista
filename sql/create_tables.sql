@@ -11,7 +11,7 @@ CREATE TABLE Tarkeysaste(
     kayttaja integer REFERENCES Kayttaja(id),
     nimi varchar(25) NOT NULL,
     tarkeys integer NOT NULL,
-    lisatieto text,
+    lisatieto varchar(500),
     CONSTRAINT tarkista_tarkeys CHECK (tarkeys > 0 AND tarkeys < 6)
 );
 
@@ -19,7 +19,7 @@ CREATE TABLE Luokka(
     id SERIAL PRIMARY KEY,
     kayttaja integer REFERENCES Kayttaja(id),
     nimi varchar(25) NOT NULL,
-    lisatieto text
+    lisatieto varchar(500)
 );
 
 CREATE TABLE Askare(
@@ -29,7 +29,7 @@ CREATE TABLE Askare(
     nimi varchar(25) NOT NULL,
     valmis boolean DEFAULT FALSE,
     lisatty date,
-    lisatieto text
+    lisatieto varchar(500)
 );
 
 CREATE TABLE Askareluokka(

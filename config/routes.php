@@ -20,24 +20,17 @@ $routes->get('/askare/:id', function($id) {
     AskareKontrolleri::nayta($id);
 });
 
+$routes->get('/askare/:id/muokkaa', function($id){
+  AskareKontrolleri::muokkaa($id);
+});
+$routes->post('/askare/:id/muokkaa', function($id){
+  AskareKontrolleri::paivita($id);
+});
 
+$routes->post('/askare/:id/poista', function($id){
+  AskareKontrolleri::poista($id);
+});
 
 $routes->get('/hiekkalaatikko', function() {
-    HelloWorldController::sandbox();
-});
-
-$routes->get('/etusivu', function() {
-    HelloWorldController::etusivu();
-});
-
-$routes->get('/askareet', function() {
-    HelloWorldController::askare_listaus();
-});
-
-$routes->get('/askareet/1', function() {
-    HelloWorldController::askare();
-});
-
-$routes->get('/askareet/1/muokkaus', function() {
-    HelloWorldController::askare_muokkaus();
+    Hiekkalaatikko::sandbox();
 });

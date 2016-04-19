@@ -6,9 +6,10 @@
   {{viesti}}
 </div>
 -->
-<p>
-    <button class="btn btn-danger">Poista</button> <a href="#" class="btn btn-default">Muokkaa</a>
-</p>
+
+<form method="post" action="{{base_path}}/askare/{{askare.id}}/poista" style="display: inline-block;">
+  <button type="submit" class="btn btn-danger">Poista</button>
+</form>
 
 <ul>
     <li><strong>Tärkeysaste:</strong></li>
