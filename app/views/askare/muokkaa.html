@@ -1,6 +1,6 @@
 {% extends "base.html" %}
 {% block content %}
-<h1>Lisää askare muistilistaan</h1>
+<h1>Muokkaa askaretta</h1>
 
 {% if virheet %}
 <div class="alert alert-danger">
@@ -12,7 +12,14 @@
 </div>
 {% endif %}
 
-<form method="post" action="{{base_path}}/askare">
+<form method="post" action="{{base_path}}/askare/{{attribuutit.id}}/muokkaa">
+    <div class="checkbox">
+      <label>
+        <input type="checkbox" name="tehty">
+        Tehty
+      </label>
+    </div>
+    
     <div class="form-group">
         <label class="control-label">Nimi</label>
         <input type="text" name="nimi" class="form-control" value="{{attribuutit.nimi}}">
@@ -34,6 +41,6 @@
     </div>
     
     <div class="form-group">
-      <button type="submit" class="btn btn-primary">Lisää</button>
+      <button type="submit" class="btn btn-primary">Tallenna</button>
     </div>
     {% endblock %}

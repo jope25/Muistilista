@@ -23,6 +23,7 @@ $routes->get('/askare/:id', function($id) {
 $routes->get('/askare/:id/muokkaa', function($id){
   AskareKontrolleri::muokkaa($id);
 });
+
 $routes->post('/askare/:id/muokkaa', function($id){
   AskareKontrolleri::paivita($id);
 });

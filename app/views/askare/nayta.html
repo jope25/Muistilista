@@ -1,27 +1,29 @@
 {% extends "base.html" %}
 {% block content %}
 <h1>{{askare.nimi}}</h1>
-<!--
-<div class="alert alert-success">
-  {{viesti}}
-</div>
--->
 
+{% if viesti %}
+<div class="alert alert-success">
+    {{viesti}}
+</div>
+{% endif %}
+
+<a class="btn btn-primary" href="{{base_path}}/askare/{{askare.id}}/muokkaa">Muokkaa</a>
 <form method="post" action="{{base_path}}/askare/{{askare.id}}/poista" style="display: inline-block;">
-  <button type="submit" class="btn btn-danger">Poista</button>
+    <button type="submit" class="btn btn-danger">Poista</button>
 </form>
 
 <ul>
     <li><strong>Tärkeysaste:</strong></li>
     <li><strong>Tilanne:</strong> 
         {% if askare.valmis %}
-            <label class="label label-success">Tehty
-        {% else %}
+        <label class="label label-success">Tehty
+            {% else %}
             <label class="label label-danger">Kesken
-        {% endif %}
-    </li>
-    <li><strong>Luokat:</strong> </li>
-    <li><strong>Lisätty:</strong> {{askare.lisatty}}</li>
-</ul>
-<p>{{askare.lisatieto}}</p>
-{% endblock %}
+                {% endif %}
+                </li>
+                <li><strong>Luokat:</strong> </li>
+                <li><strong>Lisätty:</strong> {{askare.lisatty}}</li>
+                </ul>
+                <p>{{askare.lisatieto}}</p>
+                {% endblock %}

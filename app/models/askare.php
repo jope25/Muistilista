@@ -66,11 +66,11 @@ class Askare extends BaseModel {
     }
 
     public function paivita() {
-        $kysely = DB::connection()->prepare('UPDATE Askare SET nimi = :nimi, '
+        $kysely = DB::connection()->prepare('UPDATE Askare SET nimi = :nimi, valmis = :valmis, '
                 . 'lisatieto = :lisatieto '
-                . 'WHERE Askare.id = :id');
-        $kysely->execute(array('nimi' => $this->nimi, 'lisatieto' => $this->lisatieto,
-            'id' => $this->id));
+                . 'WHERE id = :id');
+        $kysely->execute(array('nimi' => $this->nimi, 'valmis' => $this->valmis, 
+            'lisatieto' => $this->lisatieto, 'id' => $this->id));
     }
 
     public function poista() {

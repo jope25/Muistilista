@@ -18,13 +18,21 @@ class AskareKontrolleri extends BaseController {
 
     public static function lisaa() {
         $params = $_POST;
-        $askare = new Askare(array(
+        $attribuutit =array(
             'nimi' => $params['nimi'],
             'lisatieto' => $params['lisatieto'],
-        ));
-        $askare->tallenna();
-        Redirect::to('/askare/' . $askare->id, array('viesti' => 'Askare on lisätty '
-            . 'muistilistaan!'));
+        );
+        $askare = new Askare($attribuutit);
+        $virheet = $askare->virheet();
+
+        if (count($virheet) == 0) {
+            $askare->tallenna();
+            Redirect::to('/askare/' . $askare->id, array('viesti' => 'Askare on lisätty '
+                . 'muistilistaan!'));
+        } else {
+            View::make('askare/uusi.html', array('virheet' => $virheet, 
+                'attribuutit' => $attribuutit));
+        }
     }
 
     public static function muokkaa($id) {
@@ -37,18 +45,21 @@ class AskareKontrolleri extends BaseController {
         $attribuutit = array(
             'id' => $id,
             'nimi' => $params['nimi'],
-            'valmis' => $params['valmis'],
+            'valmis' => 'FALSE',
             'lisatieto' => $params['lisatieto']
         );
+        if (isset($_POST['tehty'])) {
+            $attribuutit['valmis'] = 'TRUE';
+        }
         $askare = new Askare($attribuutit);
-        $virheet = $askare->errors();
+        $virheet = $askare->virheet();
 
         if (count($virheet) > 0) {
-            View::make('askare/muokkaa.html', array('virheet' => $virheet, 
+            View::make('askare/muokkaa.html', array('virheet' => $virheet,
                 'attribuutit' => $attribuutit));
         } else {
             $askare->paivita();
-            Redirect::to('/askare/' . $askare->id, array('viesti' => 
+            Redirect::to('/askare/' . $askare->id, array('viesti' =>
                 'Askaretta on muokattu onnistuneesti!'));
         }
     }
@@ -58,4 +69,5 @@ class AskareKontrolleri extends BaseController {
         $askare->poista();
         Redirect::to('/askare', array('viesti' => 'Askare on poistettu onnistuneesti!'));
     }
+
 }
