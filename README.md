@@ -1,6 +1,8 @@
 # Tietokantasovelluksen esittelysivu
 
-Käyttäjätunnus: Kimi, salasana: Kimi123
+Käyttäjätunnus: Kimi
+
+Salasana: Kimi123
 
 ## Yleisiä linkkejä
 
