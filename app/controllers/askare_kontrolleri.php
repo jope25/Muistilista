@@ -3,7 +3,7 @@
 class AskareKontrolleri extends BaseController {
 
     public static function index() {
-        $askareet = Askare::kaikki();
+        $askareet = Askare::kaikki($_SESSION['kayttaja']);
         View::make('askare/index.html', array('askareet' => $askareet));
     }
 
@@ -19,6 +19,7 @@ class AskareKontrolleri extends BaseController {
     public static function lisaa() {
         $params = $_POST;
         $attribuutit =array(
+            'kayttaja' => $_SESSION['kayttaja'],
             'nimi' => $params['nimi'],
             'lisatieto' => $params['lisatieto'],
         );

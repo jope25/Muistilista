@@ -32,6 +32,13 @@ $routes->post('/askare/:id/poista', function($id){
   AskareKontrolleri::poista($id);
 });
 
+$routes->get('/kirjautuminen', function(){
+  KayttajaKontrolleri::kirjautuminen();
+});
+$routes->post('/kirjautuminen', function(){
+  KayttajaKontrolleri::kasittele_kirjautuminen();
+});
+
 $routes->get('/hiekkalaatikko', function() {
     Hiekkalaatikko::sandbox();
 });

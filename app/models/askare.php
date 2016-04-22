@@ -13,9 +13,9 @@ class Askare extends BaseModel {
 //            'validoi_luokat()', 'validoi_lisatieto($this->lisatieto)');
     }
 
-    public static function kaikki() {
-        $kysely = DB::connection()->prepare('SELECT * FROM Askare');
-        $kysely->execute();
+    public static function kaikki($kayttaja_id) {
+        $kysely = DB::connection()->prepare('SELECT * FROM Askare WHERE kayttaja = :kayttajaId');
+        $kysely->execute(array('kayttajaId' => $kayttaja_id));
         $rivit = $kysely->fetchAll();
         $askareet = array();
 
@@ -57,10 +57,10 @@ class Askare extends BaseModel {
     }
 
     public function tallenna() {
-        $kysely = DB::connection()->prepare('INSERT INTO Askare (nimi, lisatieto, lisatty) '
-                . 'VALUES (:nimi, :lisatieto, NOW()) '
-                . 'RETURNING id');
-        $kysely->execute(array('nimi' => $this->nimi, 'lisatieto' => $this->lisatieto));
+        $kysely = DB::connection()->prepare('INSERT INTO Askare (kayttaja, nimi, '
+                . 'lisatieto, lisatty) VALUES (:kayttaja, :nimi, :lisatieto, NOW()) RETURNING id');
+        $kysely->execute(array('kayttaja' => $this->kayttaja, 'nimi' => $this->nimi, 
+            'lisatieto' => $this->lisatieto));
         $rivi = $kysely->fetch();
         $this->id = $rivi['id'];
     }
