@@ -2,7 +2,7 @@
 
 class KayttajaKontrolleri extends BaseController {
 
-    public static function kirjautuminen() {
+    public static function sisaankirjautuminen() {
         View::make('kayttaja/kirjautuminen.html');
     }
 
@@ -12,13 +12,18 @@ class KayttajaKontrolleri extends BaseController {
         $kayttaja = Kayttaja::todenna($params['nimi'], $params['salasana']);
 
         if (!$kayttaja) {
-            View::make('kayttaja/kirjautuminen.html', array('virhe' => 
+            View::make('kayttaja/kirjautuminen.html', array('virhe' =>
                 'Väärä käyttäjätunnus tai salasana!', 'nimi' => $params['nimi']));
         } else {
             $_SESSION['kayttaja'] = $kayttaja->id;
 
             Redirect::to('/', array('viesti' => 'Tervetuloa takaisin ' . $kayttaja->nimi . '!'));
         }
+    }
+
+    public static function uloskirjautuminen() {
+        $_SESSION['kayttaja'] = null;
+        Redirect::to('/kirjautuminen', array('viesti' => 'Olet kirjautunut ulos!'));
     }
 
 }

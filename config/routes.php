@@ -33,12 +33,12 @@ $routes->post('/askare/:id/poista', function($id){
 });
 
 $routes->get('/kirjautuminen', function(){
-  KayttajaKontrolleri::kirjautuminen();
+  KayttajaKontrolleri::sisaankirjautuminen();
 });
 $routes->post('/kirjautuminen', function(){
   KayttajaKontrolleri::kasittele_kirjautuminen();
 });
 
-$routes->get('/hiekkalaatikko', function() {
-    Hiekkalaatikko::sandbox();
+$routes->post('/uloskirjautuminen', function(){
+    KayttajaKontrolleri::uloskirjautuminen();
 });

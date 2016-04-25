@@ -74,8 +74,11 @@ class Askare extends BaseModel {
     }
 
     public function poista() {
-        $kysely = DB::connection()->prepare('DELETE FROM Askare WHERE Askare.id = :id');
-        $kysely->execute(array('id' => $this->id));
+        $eka_kysely = DB::connection()->prepare('DELETE FROM Askareluokka WHERE askare = :id');
+        $eka_kysely->execute(array('id' => $this->id));
+        
+        $toka_kysely = DB::connection()->prepare('DELETE FROM Askare WHERE id = :id');
+        $toka_kysely->execute(array('id' => $this->id));
     }
 
     public function virheet() {
