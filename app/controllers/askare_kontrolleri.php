@@ -4,14 +4,23 @@ class AskareKontrolleri extends BaseController {
 
     public static function index() {
         self::check_logged_in();
-        $askareet = Askare::kaikki($_SESSION['kayttaja']);
+
+        $kayttaja_id = self::get_user_logged_in()->id;
+
+        $askareet = Askare::kaikki($kayttaja_id);
         View::make('askare/index.html', array('askareet' => $askareet));
     }
 
     public static function nayta($id) {
         self::check_logged_in();
+        $kayttaja_id = self::get_user_logged_in()->id;
         $askare = Askare::etsi($id);
-        View::make('askare/nayta.html', array('askare' => $askare));
+
+        if ($askare->kayttaja == $kayttaja_id) {
+            View::make('askare/nayta.html', array('askare' => $askare));
+        } else {
+            Redirect::to('/askare', array('virhe' => 'Askare ei kuulu muistilistaasi!'));
+        }
     }
 
     public static function luo() {
@@ -22,8 +31,8 @@ class AskareKontrolleri extends BaseController {
     public static function lisaa() {
         self::check_logged_in();
         $params = $_POST;
-        $attribuutit =array(
-            'kayttaja' => $_SESSION['kayttaja'],
+        $attribuutit = array(
+            'kayttaja' => self::get_user_logged_in()->id,
             'nimi' => $params['nimi'],
             'lisatieto' => $params['lisatieto'],
         );
@@ -35,19 +44,26 @@ class AskareKontrolleri extends BaseController {
             Redirect::to('/askare/' . $askare->id, array('viesti' => 'Askare on lisätty '
                 . 'muistilistaan!'));
         } else {
-            View::make('askare/uusi.html', array('virheet' => $virheet, 
+            View::make('askare/uusi.html', array('virheet' => $virheet,
                 'attribuutit' => $attribuutit));
         }
     }
 
     public static function muokkaa($id) {
         self::check_logged_in();
+        $kayttaja_id = self::get_user_logged_in()->id;
         $askare = Askare::etsi($id);
-        View::make('askare/muokkaa.html', array('attribuutit' => $askare));
+
+        if ($askare->kayttaja == $kayttaja_id) {
+            View::make('askare/muokkaa.html', array('attribuutit' => $askare));
+        } else {
+            Redirect::to('/askare', array('virhe' => 'Askare ei kuulu muistilistaasi!'));
+        }
     }
 
     public static function paivita($id) {
         self::check_logged_in();
+        $kayttaja_id = self::get_user_logged_in()->id;
         $params = $_POST;
         $attribuutit = array(
             'id' => $id,
@@ -60,7 +76,9 @@ class AskareKontrolleri extends BaseController {
         }
         $askare = new Askare($attribuutit);
         $virheet = $askare->virheet();
-
+        if (!$askare->on_kirjautuneen_kayttajan($kayttaja_id)) {
+            Redirect::to('/askare', array('virhe' => 'Askare ei kuulu muistilistaasi!'));
+        }
         if (count($virheet) > 0) {
             View::make('askare/muokkaa.html', array('virheet' => $virheet,
                 'attribuutit' => $attribuutit));
@@ -73,9 +91,15 @@ class AskareKontrolleri extends BaseController {
 
     public static function poista($id) {
         self::check_logged_in();
+        $kayttaja_id = self::get_user_logged_in()->id;
         $askare = new Askare(array('id' => $id));
-        $askare->poista();
-        Redirect::to('/askare', array('viesti' => 'Askare on poistettu onnistuneesti!'));
+
+        if ($askare->on_kirjautuneen_kayttajan($kayttaja_id)) {
+            $askare->poista();
+            Redirect::to('/askare', array('viesti' => 'Askare on poistettu onnistuneesti!'));
+        } else {
+            Redirect::to('/askare', array('virhe' => 'Askare ei kuulu muistilistaasi!'));
+        }
     }
 
 }

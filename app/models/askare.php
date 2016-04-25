@@ -93,4 +93,8 @@ class Askare extends BaseModel {
         return $virheet;
     }
 
+    public function on_kirjautuneen_kayttajan($kayttaja_id) {
+        $askare = $this->etsi($this->id);
+        return $askare->kayttaja == $kayttaja_id;
+    }
 }
