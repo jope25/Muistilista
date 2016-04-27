@@ -1,0 +1,49 @@
+{% extends "base.html" %}
+{% block content %}
+<h1>Muokkaa askaretta</h1>
+
+{% if virheet %}
+<div class="alert alert-danger">
+    <ul>
+        {% for virhe in virheet %}
+        <li>{{virhe}}</li>
+        {% endfor %}
+    </ul>
+</div>
+{% endif %}
+
+<form method="post" action="{{base_path}}/ta/{{attribuutit.id}}/muokkaa">
+
+    <div class="form-group">
+        <label class="control-label">Nimi</label>
+        <input type="text" name="nimi" class="form-control" value="{{attribuutit.nimi}}">
+    </div>
+
+    <p><strong>Tärkeys</strong></p>
+    <div>
+        <label class="radio-inline">
+            <input type="radio" name="tarkeys" value="1"> 1
+        </label>
+        <label class="radio-inline">
+            <input type="radio" name="tarkeys" value="2"> 2
+        </label>
+        <label class="radio-inline">
+            <input type="radio" name="tarkeys" value="3" checked> 3
+        </label>
+        <label class="radio-inline">
+            <input type="radio" name="tarkeys" value="4"> 4
+        </label>
+        <label class="radio-inline">
+            <input type="radio" name="tarkeys" value="5"> 5
+        </label>
+    </div>
+
+    <div class="form-group">
+        <label class="control-label">Lisatieto</label>
+        <textarea name="lisatieto" class="form-control">{{attribuutit.lisatieto}}</textarea>
+    </div>
+
+    <div class="form-group">
+        <button type="submit" class="btn btn-primary">Tallenna</button>
+    </div>
+    {% endblock %}

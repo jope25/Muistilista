@@ -2,7 +2,7 @@
 
 class Kayttaja extends BaseModel {
 
-    public $id, $nimi, $salasana;
+    public $id, $nimi, $salasana, $tarkistus;
 
     public function __construct($attribuutit) {
         parent::__construct($attribuutit);
@@ -43,4 +43,50 @@ class Kayttaja extends BaseModel {
         }
     }
 
+    public function tallenna() {
+        $kysely = DB::connection()->prepare('INSERT INTO Kayttaja (nimi, salasana) '
+                . 'VALUES (:nimi, :salasana) RETURNING id');
+        $kysely->execute(array('nimi' => $this->nimi, 'salasana' => $this->salasana));
+        $rivi = $kysely->fetch();
+        $this->id = $rivi['id'];
+    }
+    
+    public function virheet() {
+        $virheet = array_merge($this->validoi_kayttajanimi(), $this->validoi_salasana());
+        return $virheet;
+    }
+
+
+    private function validoi_kayttajanimi() {
+        $nimen_pituus = $this->validoi_pituus($this->nimi, 25);
+        $nimi_kaytossa = $this->kayttajanimi_kaytossa();
+        $virheet = array_merge($nimen_pituus, $nimi_kaytossa);
+        return $virheet;
+    }
+
+    private function kayttajanimi_kaytossa() {
+        $kysely = DB::connection()->prepare('SELECT * FROM Kayttaja WHERE nimi = :nimi LIMIT 1');
+        $kysely->execute(array('nimi' => $this->nimi));
+        $rivi = $kysely->fetch();
+        $virhe = array();
+        if ($rivi) {
+            $virhe[] = "Nimi on jo käytössä!";
+        }
+        return $virhe;
+    }
+    
+    private function validoi_salasana() {
+        $salasanan_pituus = $this->validoi_pituus($this->salasana, 50);
+        $samat_salasanat = $this->salasanat_tasmaavat();
+        $virheet = array_merge($salasanan_pituus, $samat_salasanat);
+        return $virheet;
+    }
+    
+    private function salasanat_tasmaavat() {
+        $virhe = array();
+        if ($this->salasana !== $this->tarkistus) {
+            $virhe[] = "Salasanat eivät täsmää!";
+        }
+        return $virhe;
+    }
 }

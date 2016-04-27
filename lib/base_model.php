@@ -60,15 +60,4 @@ class BaseModel {
         
         return $virheet;
     }
-
-    public function validoi_tarkeys($tarkeys) {
-        $virhe = array();
-
-        if (!is_numeric($tarkeys) || $tarkeys % 1 != 0 || $tarkeys < 1 || $tarkeys > 5) {
-            $virhe[] = 'Tärkeyden tulee olla kokonaisluku, jonka arvo on 1-5';
-        }
-
-        return $virhe;
-    }
-
 }

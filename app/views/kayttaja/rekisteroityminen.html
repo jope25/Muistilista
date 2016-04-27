@@ -1,0 +1,34 @@
+{% extends "base.html" %}
+{% block content %}
+<h1>Rekisteröidy</h1>
+
+{% if virheet %}
+<div class="alert alert-danger">
+    <ul>
+        {% for virhe in virheet %}
+        <li>{{virhe}}</li>
+        {% endfor %}
+    </ul>
+</div>
+{% endif %}
+<p>Nimen tulee olla vähintään 5 ja enintään 25 merkkiä pitkä. Salasanassa yläraja on 50 merkkiä.</p>
+<form method="post" action="{{base_path}}/rekisteroityminen">
+    <div class="form-group">
+        <label class="control-label">Nimi</label>
+        <input type="text" name="nimi" class="form-control" value="{{attribuutit.nimi}}">
+    </div>
+
+    <div class="form-group">
+        <label class="control-label">Salasana</label>
+        <input type="password" name="salasana" class="form-control">
+    </div>
+
+    <div class="form-group">
+        <label class="control-label">Salasana uudestaan</label>
+        <input type="password" name="tarkistus" class="form-control">
+    </div>
+    
+    <div class="form-group">
+      <button type="submit" class="btn btn-primary">Lisää</button>
+    </div>
+    {% endblock %}
