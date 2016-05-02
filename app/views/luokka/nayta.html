@@ -1,0 +1,17 @@
+{% extends "base.html" %}
+{% block content %}
+{% import "makrot/lomakkeet.html" as lomakkeet %}
+
+{% if viesti %}
+<div class="alert alert-success">
+    {{viesti}}
+</div>
+{% endif %}
+
+<h1>{{luokka.nimi}}</h1>
+
+<a class="btn btn-primary" href="{{base_path}}/luokka/{{luokka.id}}/muokkaa">Muokkaa</a>
+{{lomakkeet.poista_nappi("#{base_path}/luokka/#{luokka.id}/poista")}}
+
+<p>{{askare.lisatieto}}</p>
+{% endblock %}

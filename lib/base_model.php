@@ -33,7 +33,7 @@ class BaseModel {
         if ($merkkijono == '' || $merkkijono == null) {
             $virheet[] = 'Nimi/salasana ei saa olla tyhjä!';
         }
-        if (strlen($merkkijono) < 5 || strlen($merkkijono) > $ylaraja) {
+        if (strlen($merkkijono) < 3 || strlen($merkkijono) > $ylaraja) {
             $virheet[] = 'Nimen/salasanan pituuden tulee olla vähintään 5 ja enintään ' .
                     $ylaraja . ' merkkiä!';
         }
