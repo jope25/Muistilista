@@ -1,5 +1,6 @@
 {% extends "base.html" %}
 {% block content %}
+{% import "makrot/lomakkeet.html" as lomakkeet %}
 
 {% if viesti %}
 <div class="alert alert-success">
@@ -13,9 +14,7 @@
 </div>
 {% endif %}
 
-{% if user_logged_in %}
-    <h1>Käyttäjän {{user_logged_in.nimi}} muistilista</h1>
-  {% endif %}
+<h1>Askareet</h1>
 
 <p>
     <a href="{{base_path}}/askare/uusi" class="btn btn-success">Lisää askare</a>
@@ -25,10 +24,12 @@
     <thead>
         <tr>
             <th>Askare</th>
+            <th>Viikonpäivä</th>
             <th>Tärkeysaste</th>
+            <th>Tärkeys</th>
             <th>Tilanne</th>
             <th>Luokat</th>
-            <th>Lisätty</th>
+            <th></th>
         </tr>
     </thead>
 
@@ -36,18 +37,23 @@
         {% for askare in askareet %}
         <tr>
             <td><a href="{{base_path}}/askare/{{askare.id}}">{{askare.nimi}}</td>
+            <td>{{askare.viikonpaiva}}</td>
+            <td></td>
             <td></td>
             <td>
                 {% if askare.valmis %}
                 <label class="label label-success">Tehty
-                    {% else %}
-                    <label class="label label-danger">Kesken
-                        {% endif %}
-                        </td>
-                        <td></td>
-                        <td>{{askare.lisatty}}</td>
-                        </tr>
-                        {% endfor %}
-                        </tbody>
-                        </table>
-                        {% endblock %}
+                {% else %}
+                <label class="label label-danger">Kesken
+                {% endif %}
+            </td>
+            <td></td>
+            <td>
+                <a class="btn btn-default btn-sm" href="{{base_path}}/askare/{{askare.id}}/muokkaa">Muokkaa</a>
+                {{lomakkeet.poista_nappi("#{base_path}/askare/#{askare.id}/poista")}}
+            </td>
+        </tr>
+        {% endfor %}
+    </tbody>
+</table>
+{% endblock %}

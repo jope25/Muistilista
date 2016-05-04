@@ -13,18 +13,47 @@
 {% endif %}
 
 <form method="post" action="{{base_path}}/askare/{{attribuutit.id}}/muokkaa">
+
     <div class="checkbox">
-      <label>
-        <input type="checkbox" name="tehty">
-        Tehty
-      </label>
+        <label>
+            {% if valmis %}
+            <input type="checkbox" name="tehty" checked>
+            {% else %}
+            <input type="checkbox" name="tehty">
+            {% endif %}
+            Tehty
+        </label>
     </div>
-    
     <div class="form-group">
         <label class="control-label">Nimi</label>
         <input type="text" name="nimi" class="form-control" value="{{attribuutit.nimi}}">
     </div>
 
+    <p><strong>Viikonpäivä</strong></p>
+    <div>
+        <label class="radio-inline">
+            <input type="radio" name="paivan_indeksi" value="1" checked> Ma
+        </label>
+        <label class="radio-inline">
+            <input type="radio" name="paivan_indeksi" value="2"> Ti
+        </label>
+        <label class="radio-inline">
+            <input type="radio" name="paivan_indeksi" value="3"> Ke
+        </label>
+        <label class="radio-inline">
+            <input type="radio" name="paivan_indeksi" value="4"> To
+        </label>
+        <label class="radio-inline">
+            <input type="radio" name="paivan_indeksi" value="5"> Pe
+        </label>
+        <label class="radio-inline">
+            <input type="radio" name="paivan_indeksi" value="6"> La
+        </label>
+        <label class="radio-inline">
+            <input type="radio" name="paivan_indeksi" value="7"> Su
+        </label>
+    </div>
+    
     <div class="form-group">
         <label class="control-label">Tärkeysaste</label>
         <input type="text" name="ta" class="form-control" value="{{attribuutit.ta}}">
@@ -39,8 +68,8 @@
         <label class="control-label">Lisatieto</label>
         <textarea name="lisatieto" class="form-control">{{attribuutit.lisatieto}}</textarea>
     </div>
-    
+
     <div class="form-group">
-      <button type="submit" class="btn btn-primary">Tallenna</button>
+        <button type="submit" class="btn btn-primary">Tallenna</button>
     </div>
     {% endblock %}

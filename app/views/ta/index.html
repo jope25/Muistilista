@@ -1,5 +1,6 @@
 {% extends "base.html" %}
 {% block content %}
+{% import "makrot/lomakkeet.html" as lomakkeet %}
 
 {% if viesti %}
 <div class="alert alert-success">
@@ -13,9 +14,7 @@
 </div>
 {% endif %}
 
-{% if user_logged_in %}
-<h1>Käyttäjän {{user_logged_in.nimi}} tärkeysasteet</h1>
-{% endif %}
+<h1>Tärkeysasteet</h1>
 
 <p>
     <a href="{{base_path}}/ta/uusi" class="btn btn-success">Lisää tärkeysaste</a>
@@ -26,6 +25,8 @@
         <tr>
             <th>Nimi</th>
             <th>Tärkeys</th>
+            <th>Lisätieto</th>
+            <th></th>
         </tr>
     </thead>
 
@@ -34,6 +35,11 @@
         <tr>
             <td><a href="{{base_path}}/ta/{{ta.id}}">{{ta.nimi}}</td>
             <td>{{ta.tarkeys}}</td>
+            <td>{{ta.lisatieto}}</td>
+            <td>
+                <a class="btn btn-default btn-sm" href="{{base_path}}/ta/{{ta.id}}/muokkaa">Muokkaa</a>
+                {{lomakkeet.poista_nappi("#{base_path}/ta/#{ta.id}/poista")}}
+            </td>
         </tr>
         {% endfor %}
     </tbody>

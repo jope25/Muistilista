@@ -31,7 +31,7 @@ class TaKontrolleri extends BaseController {
     public static function lisaa() {
         self::check_logged_in();
         $params = $_POST;
-        $luku = $_POST['tarkeys'];
+        $luku = $params['tarkeys'];
         if ($luku == "1") {
             $tarkeys = 1;
         } else if ($luku == "2") {
@@ -78,7 +78,7 @@ class TaKontrolleri extends BaseController {
         self::check_logged_in();
         $kayttaja_id = self::get_user_logged_in()->id;
         $params = $_POST;
-        $luku = $_POST['tarkeys'];
+        $luku = $params['tarkeys'];
         if ($luku == "1") {
             $tarkeys = 1;
         } else if ($luku == "2") {

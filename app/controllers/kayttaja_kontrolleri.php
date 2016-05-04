@@ -3,7 +3,11 @@
 class KayttajaKontrolleri extends BaseController {
 
     public static function sisaankirjautuminen() {
-        View::make('kayttaja/kirjautuminen.html');
+        if (self::get_user_logged_in()) {
+            Redirect::to('/askare');
+        } else {
+            View::make('kayttaja/kirjautuminen.html');
+        }
     }
 
     public static function kasittele_kirjautuminen() {
@@ -25,7 +29,7 @@ class KayttajaKontrolleri extends BaseController {
         $_SESSION['kayttaja'] = null;
         Redirect::to('/kirjautuminen', array('viesti' => 'Olet kirjautunut ulos!'));
     }
-    
+
     public static function rekisteroityminen() {
         View::make('kayttaja/rekisteroityminen.html');
     }
@@ -49,4 +53,5 @@ class KayttajaKontrolleri extends BaseController {
                 'attribuutit' => $attribuutit));
         }
     }
+
 }

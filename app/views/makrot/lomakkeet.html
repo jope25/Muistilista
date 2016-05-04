@@ -1,5 +1,5 @@
 {% macro poista_nappi(toiminto, teksti) %}
   <form method="post" action="{{toiminto}}" style="display: inline-block;">
-    <button type="submit" class="btn btn-danger">{{teksti|default('Poista')}}</button>
+    <button type="submit" class="btn btn-danger btn-sm">{{teksti|default('Poista')}}</button>
   </form>
 {% endmacro %}

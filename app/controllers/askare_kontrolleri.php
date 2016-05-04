@@ -8,6 +8,9 @@ class AskareKontrolleri extends BaseController {
         $kayttaja_id = self::get_user_logged_in()->id;
 
         $askareet = Askare::kaikki($kayttaja_id);
+        foreach ($askareet as $askare) {
+            $askare->paivan_indeksi_viikonpaivaksi();
+        }
         View::make('askare/index.html', array('askareet' => $askareet));
     }
 
@@ -15,7 +18,7 @@ class AskareKontrolleri extends BaseController {
         self::check_logged_in();
         $kayttaja_id = self::get_user_logged_in()->id;
         $askare = Askare::etsi($id);
-
+        $askare->paivan_indeksi_viikonpaivaksi();
         if ($askare->kayttaja == $kayttaja_id) {
             View::make('askare/nayta.html', array('askare' => $askare));
         } else {
@@ -34,6 +37,7 @@ class AskareKontrolleri extends BaseController {
         $attribuutit = array(
             'kayttaja' => self::get_user_logged_in()->id,
             'nimi' => $params['nimi'],
+            'paivan_indeksi' => $params['paivan_indeksi'],
             'lisatieto' => $params['lisatieto'],
         );
         $askare = new Askare($attribuutit);
@@ -55,7 +59,12 @@ class AskareKontrolleri extends BaseController {
         $askare = Askare::etsi($id);
 
         if ($askare->kayttaja == $kayttaja_id) {
-            View::make('askare/muokkaa.html', array('attribuutit' => $askare));
+            if ($askare->valmis) {
+                View::make('askare/muokkaa.html', array('attribuutit' => $askare,
+                    'valmis' => 'valmis'));
+            } else {
+                View::make('askare/muokkaa.html', array('attribuutit' => $askare));
+            }
         } else {
             Redirect::to('/askare', array('virhe' => 'Askare ei kuulu muistilistaasi!'));
         }
@@ -69,9 +78,10 @@ class AskareKontrolleri extends BaseController {
             'id' => $id,
             'nimi' => $params['nimi'],
             'valmis' => 'FALSE',
+            'paivan_indeksi' => $params['paivan_indeksi'],
             'lisatieto' => $params['lisatieto']
         );
-        if (isset($_POST['tehty'])) {
+        if (isset($params['tehty'])) {
             $attribuutit['valmis'] = 'TRUE';
         }
         $askare = new Askare($attribuutit);
@@ -80,8 +90,13 @@ class AskareKontrolleri extends BaseController {
             Redirect::to('/askare', array('virhe' => 'Askare ei kuulu muistilistaasi!'));
         }
         if (count($virheet) > 0) {
-            View::make('askare/muokkaa.html', array('virheet' => $virheet,
-                'attribuutit' => $attribuutit));
+            if ($attribuutit['valmis'] == 'TRUE') {
+                View::make('askare/muokkaa.html', array('virheet' => $virheet,
+                    'attribuutit' => $attribuutit, 'valmis' => 'valmis'));
+            } else {
+                View::make('askare/muokkaa.html', array('virheet' => $virheet,
+                    'attribuutit' => $attribuutit));
+            }
         } else {
             $askare->paivita();
             Redirect::to('/askare/' . $askare->id, array('viesti' =>

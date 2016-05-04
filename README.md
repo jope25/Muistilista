@@ -1,8 +1,8 @@
 # Tietokantasovelluksen esittelysivu
 
-Käyttäjätunnus: Kimi
+Käyttäjätunnus: testikayttaja
 
-Salasana: Kimi123
+Salasana: Testi123
 
 ## Yleisiä linkkejä
 

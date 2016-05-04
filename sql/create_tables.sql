@@ -28,7 +28,7 @@ CREATE TABLE Askare(
     ta integer REFERENCES Tarkeysaste(id),
     nimi varchar(25) NOT NULL,
     valmis boolean DEFAULT FALSE,
-    lisatty date,
+    paivan_indeksi integer,
     lisatieto varchar(500)
 );
 

@@ -1,7 +1,7 @@
 <?php
 
 $routes->get('/', function() {
-    AskareKontrolleri::index();
+    KayttajaKontrolleri::sisaankirjautuminen();
 });
 
 $routes->get('/askare', function() {

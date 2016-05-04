@@ -10,9 +10,9 @@
 
 <h1>{{askare.nimi}}</h1>
 
-<a class="btn btn-primary" href="{{base_path}}/askare/{{askare.id}}/muokkaa">Muokkaa</a>
+<a class="btn btn-default btn-sm" href="{{base_path}}/askare/{{askare.id}}/muokkaa">Muokkaa</a>
 {{lomakkeet.poista_nappi("#{base_path}/askare/#{askare.id}/poista")}}
-
+<p></p>
 <ul>
     <li><strong>Tärkeysaste:</strong></li>
     <li><strong>Tilanne:</strong> 
@@ -22,8 +22,8 @@
             <label class="label label-danger">Kesken
                 {% endif %}
                 </li>
+                <li><strong>Viikonpäivä:</strong> {{askare.viikonpaiva}}</li>
                 <li><strong>Luokat:</strong> </li>
-                <li><strong>Lisätty:</strong> {{askare.lisatty}}</li>
                 </ul>
                 <p>{{askare.lisatieto}}</p>
                 {% endblock %}
