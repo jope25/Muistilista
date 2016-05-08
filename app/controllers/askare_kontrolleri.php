@@ -4,9 +4,7 @@ class AskareKontrolleri extends BaseController {
 
     public static function index() {
         self::check_logged_in();
-
         $kayttaja_id = self::get_user_logged_in()->id;
-
         $askareet = Askare::kaikki($kayttaja_id);
         foreach ($askareet as $askare) {
             $askare->paivan_indeksi_viikonpaivaksi();

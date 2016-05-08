@@ -26,7 +26,6 @@
             <th>Askare</th>
             <th>Viikonpäivä</th>
             <th>Tärkeysaste</th>
-            <th>Tärkeys</th>
             <th>Tilanne</th>
             <th>Luokat</th>
             <th></th>
@@ -36,15 +35,14 @@
     <tbody>
         {% for askare in askareet %}
         <tr>
-            <td><a href="{{base_path}}/askare/{{askare.id}}">{{askare.nimi}}</td>
+            <td><a href="{{base_path}}/askare/{{askare.id}}">{{askare.nimi}}</a></td>
             <td>{{askare.viikonpaiva}}</td>
-            <td></td>
-            <td></td>
+            <td><a href="{{base_path}}/ta/{{askare.ta.id}}">{{askare.ta.nimi}} {{askare.ta.tarkeys}}</a></td>
             <td>
                 {% if askare.valmis %}
-                <label class="label label-success">Tehty
+                <label class="label label-success">Tehty</label>
                 {% else %}
-                <label class="label label-danger">Kesken
+                <label class="label label-danger">Kesken</label>
                 {% endif %}
             </td>
             <td></td>

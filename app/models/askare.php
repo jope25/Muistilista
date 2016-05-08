@@ -14,7 +14,10 @@ class Askare extends BaseModel {
     }
 
     public static function kaikki($kayttaja_id) {
-        $kysely = DB::connection()->prepare('SELECT * FROM Askare WHERE kayttaja = :kayttajaId');
+        $kysely = DB::connection()->prepare('SELECT a.id, a.kayttaja, a.nimi, a.valmis, '
+                . 'a.paivan_indeksi, a.lisatieto, ta.id AS ta_id, ta.nimi AS ta_nimi, ta.tarkeys '
+                . 'FROM Askare a LEFT JOIN Tarkeysaste ta ON a.ta = ta.id '
+                . 'WHERE a.kayttaja = :kayttajaId ORDER BY a.paivan_indeksi ASC, ta.tarkeys DESC');
         $kysely->execute(array('kayttajaId' => $kayttaja_id));
         $rivit = $kysely->fetchAll();
         $askareet = array();
@@ -23,11 +26,14 @@ class Askare extends BaseModel {
             $askareet[] = new Askare(array(
                 'id' => $rivi['id'],
                 'kayttaja' => $rivi['kayttaja'],
-                'ta' => $rivi['ta'],
                 'nimi' => $rivi['nimi'],
                 'valmis' => $rivi['valmis'],
                 'paivan_indeksi' => $rivi['paivan_indeksi'],
-                'lisatieto' => $rivi['lisatieto']
+                'lisatieto' => $rivi['lisatieto'],
+                'ta' => new Tarkeysaste(array(
+                    'id' => $rivi['ta_id'],
+                    'nimi' => $rivi['ta_nimi'], 
+                    'tarkeys' => $rivi['tarkeys']))
             ));
         }
 
@@ -35,24 +41,27 @@ class Askare extends BaseModel {
     }
 
     public static function etsi($id) {
-        $kysely = DB::connection()->prepare('SELECT * FROM Askare WHERE id = :id LIMIT 1');
+        $kysely = DB::connection()->prepare('SELECT a.id, a.kayttaja, a.nimi, a.valmis, '
+                . 'a.paivan_indeksi, a.lisatieto, ta.id AS ta_id, ta.nimi AS ta_nimi, ta.tarkeys '
+                . 'FROM Askare a JOIN Tarkeysaste ta ON a.ta = ta.id WHERE a.id = :id LIMIT 1');
         $kysely->execute(array('id' => $id));
         $rivi = $kysely->fetch();
-
         if ($rivi) {
             $askare = new Askare(array(
                 'id' => $rivi['id'],
                 'kayttaja' => $rivi['kayttaja'],
-                'ta' => $rivi['ta'],
                 'nimi' => $rivi['nimi'],
                 'valmis' => $rivi['valmis'],
                 'paivan_indeksi' => $rivi['paivan_indeksi'],
-                'lisatieto' => $rivi['lisatieto']
+                'lisatieto' => $rivi['lisatieto'],
+                'ta' => new Tarkeysaste(array(
+                    'id' => $rivi['ta_id'],
+                    'nimi' => $rivi['ta_nimi'],
+                    'tarkeys' => $rivi['tarkeys']
+                )),
             ));
-
             return $askare;
         }
-
         return null;
     }
 
@@ -84,13 +93,8 @@ class Askare extends BaseModel {
 
     public function virheet() {
         $nimen_validointi = $this->validoi_pituus($this->nimi, 25);
-        $tan_validointi = $this->validoi_tarkeysaste();
-        $luokkien_validointi = $this->validoi_luokat();
         $lisatiedon_validointi = $this->validoi_lisatieto($this->lisatieto);
-
-        $eka = array_merge($tan_validointi, $nimen_validointi);
-        $toka = array_merge($luokkien_validointi, $lisatiedon_validointi);
-        $virheet = array_merge($eka, $toka);
+        $virheet = array_merge($nimen_validointi, $lisatiedon_validointi);
         return $virheet;
     }
 

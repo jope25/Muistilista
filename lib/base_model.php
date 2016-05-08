@@ -48,16 +48,4 @@ class BaseModel {
         }
         return $virhe;
     }
-
-    public function validoi_tarkeysaste() {
-        $virhe = array();
-        
-        return $virhe;
-    }
-
-    public function validoi_luokat() {
-        $virheet = array();
-        
-        return $virheet;
-    }
 }

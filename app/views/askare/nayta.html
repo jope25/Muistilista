@@ -14,16 +14,16 @@
 {{lomakkeet.poista_nappi("#{base_path}/askare/#{askare.id}/poista")}}
 <p></p>
 <ul>
-    <li><strong>Tärkeysaste:</strong></li>
+    <li><strong>Tärkeysaste: </strong><a href="{{base_path}}/ta/{{askare.ta.id}}">{{askare.ta.nimi}} {{askare.ta.tarkeys}}</a></li>
     <li><strong>Tilanne:</strong> 
         {% if askare.valmis %}
-        <label class="label label-success">Tehty
-            {% else %}
-            <label class="label label-danger">Kesken
-                {% endif %}
-                </li>
-                <li><strong>Viikonpäivä:</strong> {{askare.viikonpaiva}}</li>
-                <li><strong>Luokat:</strong> </li>
-                </ul>
-                <p>{{askare.lisatieto}}</p>
-                {% endblock %}
+        <label class="label label-success">Tehty</label>
+        {% else %}
+        <label class="label label-danger">Kesken</label>
+        {% endif %}
+    </li>
+    <li><strong>Viikonpäivä: </strong>{{askare.viikonpaiva}}</li>
+    <li><strong>Luokat:</strong> </li>
+</ul>
+<p>{{askare.lisatieto}}</p>
+{% endblock %}

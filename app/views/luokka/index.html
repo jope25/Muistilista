@@ -32,7 +32,7 @@
     <tbody>
         {% for luokka in luokat %}
         <tr>
-            <td><a href="{{base_path}}/luokka/{{luokka.id}}">{{luokka.nimi}}</td>
+            <td><a href="{{base_path}}/luokka/{{luokka.id}}">{{luokka.nimi}}</a></td>
             <td>{{luokka.lisatieto}}</td>
             <td>
                 <a class="btn btn-default btn-sm" href="{{base_path}}/luokka/{{luokka.id}}/muokkaa">Muokkaa</a>
