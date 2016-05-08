@@ -18,6 +18,7 @@ class Tarkeysaste extends BaseModel {
         foreach ($rivit as $rivi) {
             $asteet[] = new Tarkeysaste(array(
                 'id' => $rivi['id'],
+                'kayttaja' => $rivi['kayttaja'],
                 'nimi' => $rivi['nimi'],
                 'tarkeys' => $rivi['tarkeys'],
                 'lisatieto' => $rivi['lisatieto']

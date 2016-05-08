@@ -43,7 +43,7 @@ class Askare extends BaseModel {
     public static function etsi($id) {
         $kysely = DB::connection()->prepare('SELECT a.id, a.kayttaja, a.nimi, a.valmis, '
                 . 'a.paivan_indeksi, a.lisatieto, ta.id AS ta_id, ta.nimi AS ta_nimi, ta.tarkeys '
-                . 'FROM Askare a JOIN Tarkeysaste ta ON a.ta = ta.id WHERE a.id = :id LIMIT 1');
+                . 'FROM Askare a LEFT JOIN Tarkeysaste ta ON a.ta = ta.id WHERE a.id = :id LIMIT 1');
         $kysely->execute(array('id' => $id));
         $rivi = $kysely->fetch();
         if ($rivi) {
@@ -66,21 +66,22 @@ class Askare extends BaseModel {
     }
 
     public function tallenna() {
-        $kysely = DB::connection()->prepare('INSERT INTO Askare (kayttaja, nimi, '
-                . 'paivan_indeksi, lisatieto) VALUES (:kayttaja, :nimi, :paivan_indeksi,'
+        $kysely = DB::connection()->prepare('INSERT INTO Askare (kayttaja, ta, nimi, '
+                . 'paivan_indeksi, lisatieto) VALUES (:kayttaja, :ta, :nimi, :paivan_indeksi,'
                 . ' :lisatieto) RETURNING id');
-        $kysely->execute(array('kayttaja' => $this->kayttaja, 'nimi' => $this->nimi,
+        $kysely->execute(array('kayttaja' => $this->kayttaja, 'ta' => $this->ta, 'nimi' => $this->nimi,
             'paivan_indeksi' => $this->paivan_indeksi, 'lisatieto' => $this->lisatieto));
         $rivi = $kysely->fetch();
         $this->id = $rivi['id'];
     }
 
     public function paivita() {
-        $kysely = DB::connection()->prepare('UPDATE Askare SET nimi = :nimi, valmis = :valmis, '
-                . 'paivan_indeksi = :paivan_indeksi, lisatieto = :lisatieto '
+        $kysely = DB::connection()->prepare('UPDATE Askare SET nimi = :nimi, ta = :ta, '
+                . 'valmis = :valmis, paivan_indeksi = :paivan_indeksi, lisatieto = :lisatieto '
                 . 'WHERE id = :id');
-        $kysely->execute(array('nimi' => $this->nimi, 'valmis' => $this->valmis,
-            'paivan_indeksi' => $this->paivan_indeksi, 'lisatieto' => $this->lisatieto, 'id' => $this->id));
+        $kysely->execute(array('nimi' => $this->nimi, 'ta' => $this->ta, 'valmis' => 
+            $this->valmis, 'paivan_indeksi' => $this->paivan_indeksi, 'lisatieto' => 
+            $this->lisatieto, 'id' => $this->id));
     }
 
     public function poista() {

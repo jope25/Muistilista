@@ -26,7 +26,8 @@ class AskareKontrolleri extends BaseController {
 
     public static function luo() {
         self::check_logged_in();
-        View::make('askare/uusi.html');
+        $asteet = Tarkeysaste::kaikki(self::get_user_logged_in()->id);
+        View::make('askare/uusi.html', array('asteet' => $asteet));
     }
 
     public static function lisaa() {
@@ -38,6 +39,10 @@ class AskareKontrolleri extends BaseController {
             'paivan_indeksi' => $params['paivan_indeksi'],
             'lisatieto' => $params['lisatieto'],
         );
+        if ($params['ta'] > 0) {
+            $apu = array('ta' => $params['ta']);
+            $attribuutit = array_merge($apu, $attribuutit);
+        }
         $askare = new Askare($attribuutit);
         $virheet = $askare->virheet();
 
@@ -55,13 +60,14 @@ class AskareKontrolleri extends BaseController {
         self::check_logged_in();
         $kayttaja_id = self::get_user_logged_in()->id;
         $askare = Askare::etsi($id);
-
+        $asteet = Tarkeysaste::kaikki($kayttaja_id);
         if ($askare->kayttaja == $kayttaja_id) {
             if ($askare->valmis) {
                 View::make('askare/muokkaa.html', array('attribuutit' => $askare,
-                    'valmis' => 'valmis'));
+                    'valmis' => 'valmis', 'asteet' => $asteet));
             } else {
-                View::make('askare/muokkaa.html', array('attribuutit' => $askare));
+                View::make('askare/muokkaa.html', array('attribuutit' => $askare, 'asteet' =>
+                    $asteet));
             }
         } else {
             Redirect::to('/askare', array('virhe' => 'Askare ei kuulu muistilistaasi!'));
@@ -81,6 +87,10 @@ class AskareKontrolleri extends BaseController {
         );
         if (isset($params['tehty'])) {
             $attribuutit['valmis'] = 'TRUE';
+        }
+        if ($params['ta'] > 0) {
+            $apu = array('ta' => $params['ta']);
+            $attribuutit = array_merge($apu, $attribuutit);
         }
         $askare = new Askare($attribuutit);
         $virheet = $askare->virheet();
