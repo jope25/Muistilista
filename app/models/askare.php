@@ -2,7 +2,8 @@
 
 class Askare extends BaseModel {
 
-    public $id, $kayttaja, $ta, $nimi, $valmis, $paivan_indeksi, $lisatieto, $viikonpaiva;
+    public $id, $kayttaja, $ta, $nimi, $valmis, $paivan_indeksi, $lisatieto, $viikonpaiva,
+            $luokat;
 
     public function _construct($attribuutit) {
         parent::_construct($attribuutit);
@@ -21,8 +22,8 @@ class Askare extends BaseModel {
         $kysely->execute(array('kayttajaId' => $kayttaja_id));
         $rivit = $kysely->fetchAll();
         $askareet = array();
-
         foreach ($rivit as $rivi) {
+            $luokat = Askare::askareen_luokat($rivi['id']);
             $askareet[] = new Askare(array(
                 'id' => $rivi['id'],
                 'kayttaja' => $rivi['kayttaja'],
@@ -32,11 +33,11 @@ class Askare extends BaseModel {
                 'lisatieto' => $rivi['lisatieto'],
                 'ta' => new Tarkeysaste(array(
                     'id' => $rivi['ta_id'],
-                    'nimi' => $rivi['ta_nimi'], 
-                    'tarkeys' => $rivi['tarkeys']))
+                    'nimi' => $rivi['ta_nimi'],
+                    'tarkeys' => $rivi['tarkeys'])),
+                'luokat' => $luokat
             ));
         }
-
         return $askareet;
     }
 
@@ -58,8 +59,9 @@ class Askare extends BaseModel {
                     'id' => $rivi['ta_id'],
                     'nimi' => $rivi['ta_nimi'],
                     'tarkeys' => $rivi['tarkeys']
-                )),
+                        )),
             ));
+            $askare->luokat = $askare->askareen_luokat($askare->id);
             return $askare;
         }
         return null;
@@ -73,15 +75,27 @@ class Askare extends BaseModel {
             'paivan_indeksi' => $this->paivan_indeksi, 'lisatieto' => $this->lisatieto));
         $rivi = $kysely->fetch();
         $this->id = $rivi['id'];
+        foreach ($this->luokat as $luokka) {
+            $kysely = DB::connection()->prepare('INSERT INTO Askareluokka VALUES (:askare, '
+                    . ':luokka)');
+            $kysely->execute(array('askare' => $this->id, 'luokka' => $luokka));
+        }
     }
 
     public function paivita() {
         $kysely = DB::connection()->prepare('UPDATE Askare SET nimi = :nimi, ta = :ta, '
                 . 'valmis = :valmis, paivan_indeksi = :paivan_indeksi, lisatieto = :lisatieto '
                 . 'WHERE id = :id');
-        $kysely->execute(array('nimi' => $this->nimi, 'ta' => $this->ta, 'valmis' => 
-            $this->valmis, 'paivan_indeksi' => $this->paivan_indeksi, 'lisatieto' => 
+        $kysely->execute(array('nimi' => $this->nimi, 'ta' => $this->ta, 'valmis' =>
+            $this->valmis, 'paivan_indeksi' => $this->paivan_indeksi, 'lisatieto' =>
             $this->lisatieto, 'id' => $this->id));
+        $toka_kysely = DB::connection()->prepare('DELETE FROM Askareluokka WHERE askare = :id');
+        $toka_kysely->execute(array('id' => $this->id));
+        foreach ($this->luokat as $luokka) {
+            $kolmas_kysely = DB::connection()->prepare('INSERT INTO Askareluokka VALUES (:askare, '
+                    . ':luokka)');
+            $kolmas_kysely->execute(array('askare' => $this->id, 'luokka' => $luokka));
+        }
     }
 
     public function poista() {
@@ -121,4 +135,20 @@ class Askare extends BaseModel {
             $this->viikonpaiva = 'Su';
         }
     }
+
+    private static function askareen_luokat($id) {
+        $kysely = DB::connection()->prepare('SELECT l.id, l.nimi FROM Luokka l JOIN Askareluokka '
+                . 'al ON l.id = al.luokka JOIN Askare a ON al.askare = a.id WHERE a.id = :id');
+        $kysely->execute(array('id' => $id));
+        $rivit = $kysely->fetchAll();
+        $luokat = array();
+        foreach ($rivit as $rivi) {
+            $luokat[] = new Luokka(array(
+                'id' => $rivi['id'],
+                'nimi' => $rivi['nimi']
+            ));
+        }
+        return $luokat;
+    }
+
 }

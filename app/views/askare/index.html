@@ -45,7 +45,13 @@
                 <label class="label label-danger">Kesken</label>
                 {% endif %}
             </td>
-            <td></td>
+            <td>
+                <ul>
+                    {% for luokka in askare.luokat %}
+                    <li><a href="{{base_path}}/luokka/{{luokka.id}}">{{luokka.nimi}}</a></li>
+                    {% endfor %}
+                </ul>
+            </td>
             <td>
                 <a class="btn btn-default btn-sm" href="{{base_path}}/askare/{{askare.id}}/muokkaa">Muokkaa</a>
                 {{lomakkeet.poista_nappi("#{base_path}/askare/#{askare.id}/poista")}}

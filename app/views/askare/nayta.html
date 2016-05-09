@@ -23,7 +23,11 @@
         {% endif %}
     </li>
     <li><strong>Viikonpäivä: </strong>{{askare.viikonpaiva}}</li>
-    <li><strong>Luokat:</strong> </li>
+    <li><strong>Luokat:</strong> <ul>
+            {% for luokka in askare.luokat %}
+            <li><a href="{{base_path}}/luokka/{{luokka.id}}">{{luokka.nimi}}</a></li>
+            {% endfor %}
+        </ul></li>
 </ul>
 <p>{{askare.lisatieto}}</p>
 {% endblock %}

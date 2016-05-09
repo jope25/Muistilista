@@ -46,7 +46,7 @@
     <div class="form-group">
         <label>Tärkeysaste</label>
         <select class="form-control" name="ta">
-            <option value="0"></option>
+            <option value="0">Valitse tärkeysaste</option>
             {% for ta in asteet %}
             <option value="{{ta.id}}">{{ta.nimi}} {{ta.tarkeys}}</option>
             {% endfor %}
@@ -54,8 +54,12 @@
     </div>
 
     <div class="form-group">
-        <label class="control-label">Luokat</label>
-        <input type="text" name="luokat" class="form-control" value="{{attribuutit.luokat}}">
+        <label>Luokat</label>
+        <select class="form-control" name="luokat[]" multiple="">
+            {% for luokka in luokat %}
+            <option value="{{luokka.id}}">{{luokka.nimi}}</option>
+            {% endfor %}
+        </select>
     </div>
 
     <div class="form-group">
@@ -66,4 +70,5 @@
     <div class="form-group">
         <button type="submit" class="btn btn-primary">Lisää</button>
     </div>
+    <a class="btn btn-warning" href="{{base_path}}/askare">Peruuta</a>
     {% endblock %}

@@ -26,8 +26,10 @@ class AskareKontrolleri extends BaseController {
 
     public static function luo() {
         self::check_logged_in();
-        $asteet = Tarkeysaste::kaikki(self::get_user_logged_in()->id);
-        View::make('askare/uusi.html', array('asteet' => $asteet));
+        $kayttaja_id = self::get_user_logged_in()->id;
+        $asteet = Tarkeysaste::kaikki($kayttaja_id);
+        $luokat = Luokka::kaikki($kayttaja_id);
+        View::make('askare/uusi.html', array('asteet' => $asteet, 'luokat' => $luokat));
     }
 
     public static function lisaa() {
@@ -38,10 +40,17 @@ class AskareKontrolleri extends BaseController {
             'nimi' => $params['nimi'],
             'paivan_indeksi' => $params['paivan_indeksi'],
             'lisatieto' => $params['lisatieto'],
+            'luokat' => array()
         );
         if ($params['ta'] > 0) {
             $apu = array('ta' => $params['ta']);
             $attribuutit = array_merge($apu, $attribuutit);
+        }
+        if (isset($params['luokat'])) {
+            $luokat = $params['luokat'];
+            foreach ($luokat as $luokka) {
+                $attribuutit['luokat'][] = $luokka;
+            }
         }
         $askare = new Askare($attribuutit);
         $virheet = $askare->virheet();
@@ -61,13 +70,14 @@ class AskareKontrolleri extends BaseController {
         $kayttaja_id = self::get_user_logged_in()->id;
         $askare = Askare::etsi($id);
         $asteet = Tarkeysaste::kaikki($kayttaja_id);
+        $luokat = Luokka::kaikki($kayttaja_id);
         if ($askare->kayttaja == $kayttaja_id) {
             if ($askare->valmis) {
                 View::make('askare/muokkaa.html', array('attribuutit' => $askare,
-                    'valmis' => 'valmis', 'asteet' => $asteet));
+                    'valmis' => 'valmis', 'asteet' => $asteet, 'luokat' => $luokat));
             } else {
                 View::make('askare/muokkaa.html', array('attribuutit' => $askare, 'asteet' =>
-                    $asteet));
+                    $asteet, 'luokat' => $luokat));
             }
         } else {
             Redirect::to('/askare', array('virhe' => 'Askare ei kuulu muistilistaasi!'));
@@ -83,7 +93,8 @@ class AskareKontrolleri extends BaseController {
             'nimi' => $params['nimi'],
             'valmis' => 'FALSE',
             'paivan_indeksi' => $params['paivan_indeksi'],
-            'lisatieto' => $params['lisatieto']
+            'lisatieto' => $params['lisatieto'],
+            'luokat' => array()
         );
         if (isset($params['tehty'])) {
             $attribuutit['valmis'] = 'TRUE';
@@ -91,6 +102,12 @@ class AskareKontrolleri extends BaseController {
         if ($params['ta'] > 0) {
             $apu = array('ta' => $params['ta']);
             $attribuutit = array_merge($apu, $attribuutit);
+        }
+        if (isset($params['luokat'])) {
+            $luokat = $params['luokat'];
+            foreach ($luokat as $luokka) {
+                $attribuutit['luokat'][] = $luokka;
+            }
         }
         $askare = new Askare($attribuutit);
         $virheet = $askare->virheet();
