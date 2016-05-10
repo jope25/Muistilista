@@ -21,7 +21,7 @@ class KayttajaKontrolleri extends BaseController {
         } else {
             $_SESSION['kayttaja'] = $kayttaja->id;
 
-            Redirect::to('/', array('viesti' => 'Tervetuloa takaisin ' . $kayttaja->nimi . '!'));
+            Redirect::to('/askare', array('viesti' => 'Tervetuloa takaisin ' . $kayttaja->nimi . '!'));
         }
     }
 

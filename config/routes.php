@@ -1,7 +1,7 @@
 <?php
 
 $routes->get('/', function() {
-    KayttajaKontrolleri::sisaankirjautuminen();
+    View::make('etusivu.html');
 });
 
 $routes->get('/askare', function() {
