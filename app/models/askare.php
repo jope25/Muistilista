@@ -17,6 +17,7 @@ class Askare extends BaseModel {
         $kysely->execute(array('kayttajaId' => $kayttaja_id));
         $rivit = $kysely->fetchAll();
         $askareet = array();
+
         foreach ($rivit as $rivi) {
             $luokat = Askare::askareen_luokat($rivi['id']);
             $askareet[] = new Askare(array(
@@ -42,6 +43,7 @@ class Askare extends BaseModel {
                 . 'FROM Askare a LEFT JOIN Tarkeysaste ta ON a.ta = ta.id WHERE a.id = :id LIMIT 1');
         $kysely->execute(array('id' => $id));
         $rivi = $kysely->fetch();
+
         if ($rivi) {
             $askare = new Askare(array(
                 'id' => $rivi['id'],
@@ -70,6 +72,7 @@ class Askare extends BaseModel {
             'paivan_indeksi' => $this->paivan_indeksi, 'lisatieto' => $this->lisatieto));
         $rivi = $kysely->fetch();
         $this->id = $rivi['id'];
+
         foreach ($this->luokat as $luokka) {
             $kysely = DB::connection()->prepare('INSERT INTO Askareluokka VALUES (:askare, '
                     . ':luokka)');
@@ -84,21 +87,17 @@ class Askare extends BaseModel {
         $kysely->execute(array('nimi' => $this->nimi, 'ta' => $this->ta, 'valmis' =>
             $this->valmis, 'paivan_indeksi' => $this->paivan_indeksi, 'lisatieto' =>
             $this->lisatieto, 'id' => $this->id));
-        $toka_kysely = DB::connection()->prepare('DELETE FROM Askareluokka WHERE askare = :id');
-        $toka_kysely->execute(array('id' => $this->id));
+        Askare::poista_askareluokasta_viittaukset($this->id);
+
         foreach ($this->luokat as $luokka) {
-            $kolmas_kysely = DB::connection()->prepare('INSERT INTO Askareluokka VALUES (:askare, '
-                    . ':luokka)');
-            $kolmas_kysely->execute(array('askare' => $this->id, 'luokka' => $luokka));
+            Askare::lisaa_askareluokkaan($this->id, $luokka);
         }
     }
 
     public function poista() {
-        $eka_kysely = DB::connection()->prepare('DELETE FROM Askareluokka WHERE askare = :id');
-        $eka_kysely->execute(array('id' => $this->id));
-
-        $toka_kysely = DB::connection()->prepare('DELETE FROM Askare WHERE id = :id');
-        $toka_kysely->execute(array('id' => $this->id));
+        Askare::poista_askareluokasta_viittaukset($this->id);
+        $kysely = DB::connection()->prepare('DELETE FROM Askare WHERE id = :id');
+        $kysely->execute(array('id' => $this->id));
     }
 
     // Validoidaan nimi ja lisatieto, ja palautetaan mahdolliset virheet.
@@ -141,6 +140,7 @@ class Askare extends BaseModel {
         $kysely->execute(array('id' => $id));
         $rivit = $kysely->fetchAll();
         $luokat = array();
+        
         foreach ($rivit as $rivi) {
             $luokat[] = new Luokka(array(
                 'id' => $rivi['id'],
@@ -150,4 +150,14 @@ class Askare extends BaseModel {
         return $luokat;
     }
 
+    private static function poista_askareluokasta_viittaukset($id) {
+        $kysely = DB::connection()->prepare('DELETE FROM Askareluokka WHERE askare = :id');
+        $kysely->execute(array('id' => $id));
+    }
+
+    private static function lisaa_askareluokkaan($askare_id, $luokka_id) {
+        $kysely = DB::connection()->prepare('INSERT INTO Askareluokka VALUES (:askare, '
+                . ':luokka)');
+        $kysely->execute(array('askare' => $askare_id, 'luokka' => $luokka_id));
+    }
 }

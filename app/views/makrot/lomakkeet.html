@@ -1,5 +1,19 @@
-{% macro poista_nappi(toiminto, teksti) %}
-  <form method="post" action="{{toiminto}}" style="display: inline-block;">
-    <button type="submit" class="btn btn-danger btn-sm">{{teksti|default('Poista')}}</button>
-  </form>
+{% macro poista_nappi(toiminto) %}
+<form method="post" action="{{toiminto}}" style="display: inline-block;">
+    <button type="submit" class="btn btn-danger btn-sm">Poista</button>
+</form>
+{% endmacro %}
+
+{% macro muokkaa_nappi(polku) %}
+<a class="btn btn-default btn-sm" href="{{polku}}">Muokkaa</a>
+{% endmacro %}
+
+{% macro peruuta_nappi(polku) %}
+<a class="btn btn-warning" href="{{polku}}">Peruuta</a>
+{% endmacro %}
+
+{% macro submit_nappi(teksti) %}
+<div class="form-group">
+     <button type="submit" class="btn btn-primary">{{teksti}}</button>
+</div>
 {% endmacro %}

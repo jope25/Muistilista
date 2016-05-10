@@ -41,10 +41,8 @@ class Tarkeysaste extends BaseModel {
                 'tarkeys' => $rivi['tarkeys'],
                 'lisatieto' => $rivi['lisatieto']
             ));
-
             return $ta;
         }
-
         return null;
     }
 
@@ -76,6 +74,7 @@ class Tarkeysaste extends BaseModel {
         $nimen_validointi = $this->validoi_pituus($this->nimi, 25);
         $lisatiedon_validointi = $this->validoi_lisatieto($this->lisatieto);
         $virheet = array_merge($nimen_validointi, $lisatiedon_validointi);
+        
         if ($this->tarkeys == '' || $this->tarkeys == null) {
             $virheet[] = 'Tärkeysasteella tulee olla tärkeys!';
         }
@@ -93,6 +92,7 @@ class Tarkeysaste extends BaseModel {
         $kysely = DB::connection()->prepare('SELECT * FROM Askare WHERE ta = :id LIMIT 1');
         $kysely->execute(array('id' => $this->id));
         $rivi = $kysely->fetch();
+        
         if ($rivi) {
             return false;
         }

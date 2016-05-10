@@ -6,6 +6,7 @@ class AskareKontrolleri extends BaseController {
         self::check_logged_in();
         $kayttaja_id = self::get_user_logged_in()->id;
         $askareet = Askare::kaikki($kayttaja_id);
+        
         foreach ($askareet as $askare) {
             $askare->paivan_indeksi_viikonpaivaksi();
         }
@@ -17,6 +18,7 @@ class AskareKontrolleri extends BaseController {
         $kayttaja_id = self::get_user_logged_in()->id;
         $askare = Askare::etsi($id);
         $askare->paivan_indeksi_viikonpaivaksi();
+        
         if ($askare->kayttaja == $kayttaja_id) {
             View::make('askare/nayta.html', array('askare' => $askare));
         } else {
@@ -26,9 +28,11 @@ class AskareKontrolleri extends BaseController {
 
     public static function luo() {
         self::check_logged_in();
+        
         $kayttaja_id = self::get_user_logged_in()->id;
         $asteet = Tarkeysaste::kaikki($kayttaja_id);
         $luokat = Luokka::kaikki($kayttaja_id);
+        
         View::make('askare/uusi.html', array('asteet' => $asteet, 'luokat' => $luokat));
     }
 
@@ -68,9 +72,11 @@ class AskareKontrolleri extends BaseController {
     public static function muokkaa($id) {
         self::check_logged_in();
         $kayttaja_id = self::get_user_logged_in()->id;
+        
         $askare = Askare::etsi($id);
         $asteet = Tarkeysaste::kaikki($kayttaja_id);
         $luokat = Luokka::kaikki($kayttaja_id);
+        
         if ($askare->kayttaja == $kayttaja_id) {
             if ($askare->valmis) {
                 View::make('askare/muokkaa.html', array('attribuutit' => $askare,

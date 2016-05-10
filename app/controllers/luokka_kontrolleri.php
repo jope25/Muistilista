@@ -4,9 +4,7 @@ class LuokkaKontrolleri extends BaseController {
 
     public static function index() {
         self::check_logged_in();
-
         $kayttaja_id = self::get_user_logged_in()->id;
-
         $luokat = Luokka::kaikki($kayttaja_id);
         View::make('luokka/index.html', array('luokat' => $luokat));
     }
@@ -72,6 +70,7 @@ class LuokkaKontrolleri extends BaseController {
         );
         $luokka = new Luokka($attribuutit);
         $virheet = $luokka->virheet();
+        
         if (!$luokka->on_kirjautuneen_kayttajan($kayttaja_id)) {
             Redirect::to('/luokka', array('virhe' => 'Luokka ei liity muistilistaasi!'));
         }

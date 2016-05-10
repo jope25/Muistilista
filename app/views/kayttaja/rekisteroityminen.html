@@ -1,5 +1,7 @@
 {% extends "base.html" %}
 {% block content %}
+{% import "makrot/lomakkeet.html" as lomakkeet %}
+
 <h1>Rekisteröidy</h1>
 
 {% if virheet %}
@@ -11,7 +13,7 @@
     </ul>
 </div>
 {% endif %}
-<p>Nimen tulee olla vähintään 5 ja enintään 25 merkkiä pitkä. Salasanassa yläraja on 50 merkkiä.</p>
+<p>Nimen tulee olla vähintään 3 ja enintään 25 merkkiä pitkä. Salasanassa yläraja on 50 merkkiä.</p>
 <form method="post" action="{{base_path}}/rekisteroityminen">
     <div class="form-group">
         <label class="control-label">Nimi</label>
@@ -27,8 +29,6 @@
         <label class="control-label">Salasana uudestaan</label>
         <input type="password" name="tarkistus" class="form-control">
     </div>
-    
-    <div class="form-group">
-      <button type="submit" class="btn btn-primary">Lisää</button>
-    </div>
+
+    {{lomakkeet.submit_nappi("Rekisteröidy")}}
     {% endblock %}

@@ -12,7 +12,6 @@ class KayttajaKontrolleri extends BaseController {
 
     public static function kasittele_kirjautuminen() {
         $params = $_POST;
-
         $kayttaja = Kayttaja::todenna($params['nimi'], $params['salasana']);
 
         if (!$kayttaja) {
@@ -20,7 +19,6 @@ class KayttajaKontrolleri extends BaseController {
                 'Väärä käyttäjätunnus tai salasana!', 'nimi' => $params['nimi']));
         } else {
             $_SESSION['kayttaja'] = $kayttaja->id;
-
             Redirect::to('/askare', array('viesti' => 'Tervetuloa takaisin ' . $kayttaja->nimi . '!'));
         }
     }

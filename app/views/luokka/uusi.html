@@ -1,5 +1,7 @@
 {% extends "base.html" %}
 {% block content %}
+{% import "makrot/lomakkeet.html" as lomakkeet %}
+
 <h1>Lisää luokka</h1>
 
 {% if virheet %}
@@ -23,8 +25,8 @@
         <textarea name="lisatieto" class="form-control">{{attribuutit.lisatieto}}</textarea>
     </div>
 
-    <div class="form-group">
-        <button type="submit" class="btn btn-primary">Lisää</button>
-    </div>
-    <a class="btn btn-warning" href="{{base_path}}/luokka">Peruuta</a>
+
+    {{lomakkeet.submit_nappi("Lisää")}}
+
+    {{lomakkeet.peruuta_nappi("#{base_path}/luokka")}}
     {% endblock %}

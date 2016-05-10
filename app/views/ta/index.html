@@ -37,7 +37,7 @@
             <td>{{ta.tarkeys}}</td>
             <td>{{ta.lisatieto}}</td>
             <td>
-                <a class="btn btn-default btn-sm" href="{{base_path}}/ta/{{ta.id}}/muokkaa">Muokkaa</a>
+                {{lomakkeet.muokkaa_nappi("#{base_path}/ta/#{ta.id}/muokkaa")}}
                 {{lomakkeet.poista_nappi("#{base_path}/ta/#{ta.id}/poista")}}
             </td>
         </tr>

@@ -23,7 +23,6 @@ class Luokka extends BaseModel {
                 'lisatieto' => $rivi['lisatieto']
             ));
         }
-
         return $luokat;
     }
 
@@ -39,10 +38,8 @@ class Luokka extends BaseModel {
                 'nimi' => $rivi['nimi'],
                 'lisatieto' => $rivi['lisatieto']
             ));
-
             return $luokka;
         }
-
         return null;
     }
 
@@ -63,11 +60,9 @@ class Luokka extends BaseModel {
     }
 
     public function poista() {
-        $eka_kysely = DB::connection()->prepare('DELETE FROM Askareluokka WHERE luokka = :id');
-        $eka_kysely->execute(array('id' => $this->id));
-
-        $toka_kysely = DB::connection()->prepare('DELETE FROM Luokka WHERE id = :id');
-        $toka_kysely->execute(array('id' => $this->id));
+        Luokka::poista_askareluokasta_viittaukset($this->id);
+        $kysely = DB::connection()->prepare('DELETE FROM Luokka WHERE id = :id');
+        $kysely->execute(array('id' => $this->id));
     }
 
     // Validoidaan nimi ja lisatieto ja palautetaan mahdolliset virheet.
@@ -84,4 +79,8 @@ class Luokka extends BaseModel {
         return $luokka->kayttaja == $kayttaja_id;
     }
 
+    private static function poista_askareluokasta_viittaukset($id) {
+        $kysely = DB::connection()->prepare('DELETE FROM Askareluokka WHERE luokka = :id');
+        $kysely->execute(array('id' => $id));
+    }
 }

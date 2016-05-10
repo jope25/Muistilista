@@ -19,10 +19,8 @@ class Kayttaja extends BaseModel {
                 'nimi' => $rivi['nimi'],
                 'salasana' => $rivi['salasana']
             ));
-
             return $kayttaja;
         }
-
         return null;
     }
 

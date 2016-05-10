@@ -13,7 +13,7 @@ class BaseModel {
         }
     }
     
-    // Merkkijono pituuden validointi.
+    // Merkkijonon pituuden validointi.
     public function validoi_pituus($merkkijono, $ylaraja) {
         $virheet = array();
         if ($merkkijono == '' || $merkkijono == null) {

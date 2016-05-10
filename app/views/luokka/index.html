@@ -35,7 +35,7 @@
             <td><a href="{{base_path}}/luokka/{{luokka.id}}">{{luokka.nimi}}</a></td>
             <td>{{luokka.lisatieto}}</td>
             <td>
-                <a class="btn btn-default btn-sm" href="{{base_path}}/luokka/{{luokka.id}}/muokkaa">Muokkaa</a>
+                {{lomakkeet.muokkaa_nappi("#{base_path}/luokka/#{luokka.id}/muokkaa")}}
                 {{lomakkeet.poista_nappi("#{base_path}/luokka/#{luokka.id}/poista")}}
             </td>
         </tr>

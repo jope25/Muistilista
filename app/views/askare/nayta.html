@@ -10,7 +10,7 @@
 
 <h1>{{askare.nimi}}</h1>
 
-<a class="btn btn-default btn-sm" href="{{base_path}}/askare/{{askare.id}}/muokkaa">Muokkaa</a>
+{{lomakkeet.muokkaa_nappi("#{base_path}/askare/#{askare.id}/muokkaa")}}
 {{lomakkeet.poista_nappi("#{base_path}/askare/#{askare.id}/poista")}}
 <p></p>
 <ul>
