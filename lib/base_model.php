@@ -2,8 +2,6 @@
 
 class BaseModel {
 
-//    protected $validators;
-
     public function __construct($attributes = null) {
         // Käydään assosiaatiolistan avaimet läpi
         foreach ($attributes as $attribute => $value) {
@@ -14,20 +12,8 @@ class BaseModel {
             }
         }
     }
-
-// Kint antaa jostain syystä virheilmoituksen "Invalid argument supplied for foreach()" 
-// rivistä 23. Lisäksi, en keksinyt kuinka välittää parametrit nätisti.
-//
-//    public function errors() {
-//        $errors = array();
-//        foreach ($this->validators as $validator) {
-//            $validator_errors = $this->{$validator};
-//            $errors = array_merge($errors, $validator_errors);
-//        }
-//
-//        return $errors;
-//    }
     
+    // Merkkijono pituuden validointi.
     public function validoi_pituus($merkkijono, $ylaraja) {
         $virheet = array();
         if ($merkkijono == '' || $merkkijono == null) {
@@ -41,6 +27,7 @@ class BaseModel {
         return $virheet;
     }
 
+    // Tietokohteiden lisatiedon validointi.
     public function validoi_lisatieto($lisatieto) {
         $virhe = array();
         if (strlen($lisatieto) > 500) {

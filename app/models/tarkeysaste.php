@@ -71,6 +71,7 @@ class Tarkeysaste extends BaseModel {
         $kysely->execute(array('id' => $this->id));
     }
 
+    // Validoidaan nimi ja lisatieto ja palautetaan mahdolliset virheet.
     public function virheet() {
         $nimen_validointi = $this->validoi_pituus($this->nimi, 25);
         $lisatiedon_validointi = $this->validoi_lisatieto($this->lisatieto);
@@ -81,11 +82,13 @@ class Tarkeysaste extends BaseModel {
         return $virheet;
     }
 
+    // Tarkistetaan, onko ta kirjautuneen käyttäjän.
     public function on_kirjautuneen_kayttajan($kayttaja_id) {
         $ta = $this->etsi($this->id);
         return $ta->kayttaja == $kayttaja_id;
     }
     
+    // Tarkistetaan, onko tärkeysaste asetettu johonkin askareeseen.
     public function voiko_poistaa() {
         $kysely = DB::connection()->prepare('SELECT * FROM Askare WHERE ta = :id LIMIT 1');
         $kysely->execute(array('id' => $this->id));

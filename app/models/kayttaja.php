@@ -51,12 +51,13 @@ class Kayttaja extends BaseModel {
         $this->id = $rivi['id'];
     }
     
+    // Validoidaan nimi ja salasana ja palautettaan mahdolliset virheet.
     public function virheet() {
         $virheet = array_merge($this->validoi_kayttajanimi(), $this->validoi_salasana());
         return $virheet;
     }
 
-
+    // Validoidaan käyttäjänimen pituus ja saatavuus.
     private function validoi_kayttajanimi() {
         $nimen_pituus = $this->validoi_pituus($this->nimi, 25);
         $nimi_kaytossa = $this->kayttajanimi_kaytossa();
@@ -64,6 +65,7 @@ class Kayttaja extends BaseModel {
         return $virheet;
     }
 
+    // Tarkistetaan, ettei käyttäjänimi ole käytössä.
     private function kayttajanimi_kaytossa() {
         $kysely = DB::connection()->prepare('SELECT * FROM Kayttaja WHERE nimi = :nimi LIMIT 1');
         $kysely->execute(array('nimi' => $this->nimi));
@@ -75,6 +77,7 @@ class Kayttaja extends BaseModel {
         return $virhe;
     }
     
+    // Validoidaan salasanan pituus ja samuus tarkistussalasanaan.
     private function validoi_salasana() {
         $salasanan_pituus = $this->validoi_pituus($this->salasana, 50);
         $samat_salasanat = $this->salasanat_tasmaavat();
@@ -82,6 +85,7 @@ class Kayttaja extends BaseModel {
         return $virheet;
     }
     
+    // Tarkistetaan, että salasanat täsmäävät.
     private function salasanat_tasmaavat() {
         $virhe = array();
         if ($this->salasana !== $this->tarkistus) {

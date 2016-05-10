@@ -70,6 +70,7 @@ class Luokka extends BaseModel {
         $toka_kysely->execute(array('id' => $this->id));
     }
 
+    // Validoidaan nimi ja lisatieto ja palautetaan mahdolliset virheet.
     public function virheet() {
         $nimen_validointi = $this->validoi_pituus($this->nimi, 25);
         $lisatiedon_validointi = $this->validoi_lisatieto($this->lisatieto);
@@ -77,6 +78,7 @@ class Luokka extends BaseModel {
         return $virheet;
     }
 
+    // Tarkistetaan, onko luokka kirjautuneen käyttäjän.
     public function on_kirjautuneen_kayttajan($kayttaja_id) {
         $luokka = $this->etsi($this->id);
         return $luokka->kayttaja == $kayttaja_id;

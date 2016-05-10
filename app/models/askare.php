@@ -7,11 +7,6 @@ class Askare extends BaseModel {
 
     public function _construct($attribuutit) {
         parent::_construct($attribuutit);
-// Kint antaa jostain syystä virheilmoituksen "Invalid argument supplied for foreach()" 
-// BaseModelin rivistä 23
-//
-//        $this->validators = array('validoi_pituus($this->nimi, 25)', 'validoi_tarkeysaste()',
-//            'validoi_luokat()', 'validoi_lisatieto($this->lisatieto)');
     }
 
     public static function kaikki($kayttaja_id) {
@@ -106,6 +101,7 @@ class Askare extends BaseModel {
         $toka_kysely->execute(array('id' => $this->id));
     }
 
+    // Validoidaan nimi ja lisatieto, ja palautetaan mahdolliset virheet.
     public function virheet() {
         $nimen_validointi = $this->validoi_pituus($this->nimi, 25);
         $lisatiedon_validointi = $this->validoi_lisatieto($this->lisatieto);
@@ -113,11 +109,13 @@ class Askare extends BaseModel {
         return $virheet;
     }
 
+    // Tarkistetaan, että askare on kirjautuneen käyttäjän.
     public function on_kirjautuneen_kayttajan($kayttaja_id) {
         $askare = $this->etsi($this->id);
         return $askare->kayttaja == $kayttaja_id;
     }
 
+    // Muutetaan askareen päivän indeksi sitä vastaavaksi viikonpäiväksi.
     public function paivan_indeksi_viikonpaivaksi() {
         if ($this->paivan_indeksi === 1) {
             $this->viikonpaiva = 'Ma';
@@ -136,6 +134,7 @@ class Askare extends BaseModel {
         }
     }
 
+    // Haetaan askareeseen liittyvät luokat.
     private static function askareen_luokat($id) {
         $kysely = DB::connection()->prepare('SELECT l.id, l.nimi FROM Luokka l JOIN Askareluokka '
                 . 'al ON l.id = al.luokka JOIN Askare a ON al.askare = a.id WHERE a.id = :id');
